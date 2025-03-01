@@ -8,17 +8,16 @@ if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
     df = pd.read_csv(file_path)
 else:
     # Create a new DataFrame with proper headers
-    df = pd.DataFrame(columns=["type", "reported_by", "lat", "lon", "time", "resolved", "verified"])
+    df = pd.DataFrame(columns=["type", "reported_by", "latitude", "longitude", "time", "resolved", "verified"])
 
-print("Columns:", df.columns)
-
-def addReport(df, type, reported_by, lat, lon, time, resolved, verified):
+def addReport(df, type, reported_by, latitude, longitude, accuracy, time, resolved, verified):
     # Create a new row as a dictionary
     new_row = {
         "type": type,
         "reported_by": reported_by,
-        "lat": lat,
-        "lon": lon,  # Remove negation unless it's intentional
+        "latitude": latitude,
+        "longitude": longitude,  # Remove negation unless it's intentional
+        "accuracy": accuracy,
         "time": time,
         "resolved": resolved,
         "verified": verified
@@ -34,4 +33,4 @@ def addReport(df, type, reported_by, lat, lon, time, resolved, verified):
 def getReports():
     return df
 
-df = addReport(df, "FIRE", "KINGDOM", 39.3, 38.2, "2024-22-08", True, True)
+#df = addReport(df, "FIRE", "KINGDOM", 39.3, 38.2, "2024-22-08", True, True)

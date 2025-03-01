@@ -15,6 +15,8 @@ color_disease_area = "#8EB90450"
 color_crime_center = "#445B82FF"
 color_crime_area = "#445B8250"
 
+color_unknown = "#dedede30"
+
 # Get users current location
 def getLocation():
     """
@@ -28,13 +30,13 @@ def getLocation():
         [{  # SIZE OF USER CENTER
             "latitude": location['coords']["latitude"],
             "longitude": location['coords']["longitude"],
-            "size": 5,
+            "accuracy": 5,
             "color": color_user_center,
         },
         {   # SIZE OF USER SURROUNDING CIRCLE
             "latitude": location['coords']["latitude"],
             "longitude": location['coords']["longitude"],
-            "size": location['coords']['accuracy'],
+            "accuracy": location['coords']['accuracy'],
             "color": color_user_area,
              
         }])
