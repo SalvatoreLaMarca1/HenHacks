@@ -12,7 +12,7 @@ else:
 
 def addReport(df, type, reported_by, latitude, longitude, accuracy, time, resolved, verified):
     # Create a new row as a dictionary
-    new_row = {
+    new_row = pd.DataFrame([{
         "type": type,
         "reported_by": reported_by,
         "latitude": latitude,
@@ -21,11 +21,10 @@ def addReport(df, type, reported_by, latitude, longitude, accuracy, time, resolv
         "time": time,
         "resolved": resolved,
         "verified": verified
-    }
+    }])
     
     # Append the new row to the DataFrame
-    df = df.append(new_row, ignore_index=True)
-    
+    df = pd.concat([df, new_row], ignore_index=True)    
     # Write the updated DataFrame to CSV with headers
     df.to_csv(file_path, index=False)
     return df

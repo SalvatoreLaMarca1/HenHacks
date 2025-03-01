@@ -7,7 +7,7 @@ from db import *
 
 def main():
     
-    user = ""
+    user = "USER"
     
     typeOfEvent = st.pills(
         "What type of event is happening?",
@@ -43,7 +43,10 @@ def main():
     df_user = getLocation();
     df_reports = getReports();
     
-    #st.button("Report", on_click=addReport(getReports(), typeOfEvent, user, df_user[0]["latitude"], df_user[0]["longitude"], sizeOfEvent, now, False, False))
+    lat = 39
+    lon = 32
+    
+    st.button("Report", on_click=lambda: addReport(df, typeOfEvent, user, lat, lon, sizeOfEvent, now, False, False))
     
     
     st.write("Button clicked!")
