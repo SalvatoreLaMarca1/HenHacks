@@ -61,6 +61,12 @@ def main():
        
     # current only shows the user
     st.map(df_points, latitude="latitude", longitude="longitude", size="accuracy", color="color")
+    
+    # Add theming
+    #def local_css(file_name):
+    #    with open(file_name) as f:
+    #        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    # local_css("medievel-theme.css")
 
 
     
