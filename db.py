@@ -32,4 +32,3 @@ def addReport(df, type, reported_by, latitude, longitude, accuracy, time, resolv
 def getReports():
     return df
 
-#df = addReport(df, "FIRE", "KINGDOM", 39.3, 38.2, "2024-22-08", True, True)

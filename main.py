@@ -7,24 +7,20 @@ from db import *
 
 def main():
     
-    user = "USER"
-    
+    # Report Options
     typeOfEvent = st.pills(
         "What type of event is happening?",
         ("FIRE", "DISEASE", "CRIME"),
     )
     
+    # Size Options
     sizeOfEvent = st.pills(
         "What is the size of the event?",
         ("SMALL", "MEDIUM", "LARGE")
     )
     
-    st.write("Type:", typeOfEvent)
-    st.write("Size: ", sizeOfEvent)
-    
+    user = "USER"
     now = datetime.now()
-    
-    st.write(now)
     
     
     # Define a mapping from type to hex color
@@ -40,13 +36,23 @@ def main():
     "CRIME": color_crime_area
     }
     
-    df_user = getLocation();
+    df_user = pd.DataFrame(getLocation());
     df_reports = getReports();
     
-    lat = 39
-    lon = 32
+
     
-    st.button("Report", on_click=lambda: addReport(df, typeOfEvent, user, lat, lon, sizeOfEvent, now, False, False))
+    # Check if the DataFrame is not empty before accessing the data
+    if not df_user.empty:
+        latitude = df_user.loc[0, "latitude"]
+        longitude = df_user.loc[0, "longitude"]
+        st.button("Report", on_click=lambda: addReport(df, typeOfEvent, user, latitude, longitude, sizeOfEvent, now, False, False))
+    else:
+        # Handle the case where the DataFrame is empty (e.g., set default values or wait)
+        latitude = None
+        longitude = None
+        print("Data is still loading, default values set.")
+
+    
     
     
     st.write("Button clicked!")
