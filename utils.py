@@ -15,8 +15,6 @@ color_disease_area = "#8EB90450"
 color_crime_center = "#445B82FF"
 color_crime_area = "#445B8250"
 
-
-
 # Get users current location
 def getLocation():
     """
@@ -44,3 +42,5 @@ def getLocation():
     else:
         st.error("Could not retrieve location. Make sure location services are enabled.")
         return None
+    
+    

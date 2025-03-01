@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from utils import *
+from db import *
 
 def main():
     st.button("Report")
