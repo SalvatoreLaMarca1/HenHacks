@@ -24,7 +24,6 @@ def getLocation():
     The user will be prompted by their browser to share their location.
     """
     location = st_js.get_geolocation()
-    print(location)
     if location:  
         df = pd.DataFrame(
         [{  # SIZE OF USER CENTER

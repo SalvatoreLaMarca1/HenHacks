@@ -45,7 +45,8 @@ def main():
     if not df_user.empty:
         latitude = df_user.loc[0, "latitude"]
         longitude = df_user.loc[0, "longitude"]
-        st.button("Report", on_click=lambda: addReport(df, typeOfEvent, user, latitude, longitude, sizeOfEvent, now, False, False))
+        st.button("Report", on_click=lambda: addReport(typeOfEvent, user, latitude, longitude, sizeOfEvent, now, False, False))
+        
     else:
         # Handle the case where the DataFrame is empty (e.g., set default values or wait)
         latitude = None
@@ -65,9 +66,7 @@ def main():
     
     df_points = pd.concat([df_user, df_center_reports], join='inner')
     df_points = pd.concat([df_points, df_area_reports], join='inner')
-    
-    print(df_points)
-       
+           
     # current only shows the user
     st.map(df_points, latitude="latitude", longitude="longitude", size="accuracy", color="color")
     

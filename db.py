@@ -1,16 +1,11 @@
 import pandas as pd
 import os
 
-file_path = "./data.csv"
+filepath = "./data.csv"
 
-# Check if file exists and is not empty
-if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
-    df = pd.read_csv(file_path)
-else:
-    # Create a new DataFrame with proper headers
-    df = pd.DataFrame(columns=["type", "reported_by", "latitude", "longitude", "time", "resolved", "verified"])
-
-def addReport(df, type, reported_by, latitude, longitude, accuracy, time, resolved, verified):
+def addReport(type, reported_by, latitude, longitude, accuracy, time, resolved, verified):
+    df = pd.DataFrame(openCSV(filepath))
+    
     # Create a new row as a dictionary
     new_row = pd.DataFrame([{
         "type": type,
@@ -26,9 +21,19 @@ def addReport(df, type, reported_by, latitude, longitude, accuracy, time, resolv
     # Append the new row to the DataFrame
     df = pd.concat([df, new_row], ignore_index=True)    
     # Write the updated DataFrame to CSV with headers
-    df.to_csv(file_path, index=False)
+    df.to_csv(filepath, index=False)
     return df
 
 def getReports():
+    df = pd.DataFrame(openCSV(filepath))
+    return df
+
+def openCSV(filepath):
+    # Check if file exists and is not empty
+    if os.path.exists(filepath) and os.path.getsize(filepath) > 0:
+        df = pd.read_csv(filepath)
+    else:
+        # Create a new DataFrame with proper headers
+        df = pd.DataFrame(columns=["type", "reported_by", "latitude", "longitude", "time", "resolved", "verified"])
     return df
 
