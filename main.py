@@ -7,6 +7,27 @@ from db import *
 
 def main():
     
+    if "name" not in st.session_state:
+        st.session_state.name = "USER"
+    if "show_password" not in st.session_state:
+        st.session_state.show_password = False
+        
+    def toggle_state():
+        if st.session_state.name == "USER":
+            st.session_state.name = "KINGDOM"
+            st.session_state.show_password = True
+        else:
+            st.session_state.name = "USER"
+            st.session_state.show_password = False
+    
+    st.button(st.session_state.name, on_click=toggle_state)
+
+    placeholder = st.empty()
+    
+    if st.session_state.show_password:
+        password = placeholder.text_input("Password")
+        
+        
     # Report Options
     typeOfEvent = st.pills(
         "What type of event is happening?",
@@ -27,8 +48,8 @@ def main():
             sizeOfEvent = 50
         case "LARGE":
             sizeOfEvent = 80
+        
     
-    user = "USER"
     now = datetime.now()
     
     
@@ -48,19 +69,39 @@ def main():
     df_user = pd.DataFrame(getLocation());
     df_reports = getReports();
     
+    
+    if st.session_state.name == "USER":
+        if not df_user.empty:
+            latitude = df_user.loc[0, "latitude"]
+            longitude = df_user.loc[0, "longitude"]
+            st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
+    
+    if st.session_state.name == "KINGDOM" and password == "password":
+        placeholder.empty()
+        if not df_user.empty:
+            latitude = df_user.loc[0, "latitude"]
+            longitude = df_user.loc[0, "longitude"]
+            st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
+        
+        else:
+            # Handle the case where the DataFrame is empty (e.g., set default values or wait)
+            latitude = None
+            longitude = None
+            print("Data is still loading, default values set.")
+    
 
     
     # Check if the DataFrame is not empty before accessing the data
-    if not df_user.empty:
-        latitude = df_user.loc[0, "latitude"]
-        longitude = df_user.loc[0, "longitude"]
-        st.button("Report", on_click=lambda: addReport(typeOfEvent, user, latitude, longitude, sizeOfEvent, now, False, False))
+    # if not df_user.empty:
+    #     latitude = df_user.loc[0, "latitude"]
+    #     longitude = df_user.loc[0, "longitude"]
+    #     st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
         
-    else:
-        # Handle the case where the DataFrame is empty (e.g., set default values or wait)
-        latitude = None
-        longitude = None
-        print("Data is still loading, default values set.")
+    # else:
+    #     # Handle the case where the DataFrame is empty (e.g., set default values or wait)
+    #     latitude = None
+    #     longitude = None
+    #     print("Data is still loading, default values set.")
 
     
     df_center_reports = df_reports.copy(deep=True)
