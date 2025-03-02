@@ -19,6 +19,15 @@ def main():
         ("SMALL", "MEDIUM", "LARGE")
     )
     
+    # Switch to number values
+    match sizeOfEvent:
+        case "SMALL":
+            sizeOfEvent = 20
+        case "MEDIUM":
+            sizeOfEvent = 50
+        case "LARGE":
+            sizeOfEvent = 80
+    
     user = "USER"
     now = datetime.now()
     
