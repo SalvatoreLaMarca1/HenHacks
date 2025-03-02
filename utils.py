@@ -45,3 +45,19 @@ def getLocation():
         return None
     
     
+def toggle_state():
+        if st.session_state.name == "USER":
+            st.session_state.name = "KINGDOM"
+            st.session_state.show_password = True
+        else:
+            st.session_state.name = "USER"
+            st.session_state.show_password = False
+    
+        st.button(st.session_state.name, on_click=toggle_state)
+
+        placeholder = st.empty()
+        
+        if st.session_state.show_password:
+            password = placeholder.text_input("Password")
+    
+    

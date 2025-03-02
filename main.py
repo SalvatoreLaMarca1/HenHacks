@@ -30,9 +30,6 @@ def main():
     if "filterMap" not in st.session_state:
         st.session_state.filterMap = []
         
-    
-   
-        
             
     # Report Options
     with col1:
@@ -61,7 +58,6 @@ def main():
     
     now = datetime.now()
     
-    
     # Define a mapping from type to hex color
     color_center_mapping = {
     "FIRE": color_fire_center,
@@ -81,7 +77,7 @@ def main():
     
     # Filter types of points 
     st.session_state.filterMap = st.pills(
-        "",
+        "Filter the Map",
         ("FIRE", "DISEASE", "CRIME"),
         selection_mode="multi"
     )
@@ -95,7 +91,8 @@ def main():
         if not df_user.empty:
             latitude = df_user.loc[0, "latitude"]
             longitude = df_user.loc[0, "longitude"]
-            st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
+            with col3:
+                st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
 
     
     df_center_reports = df_reports.copy(deep=True)
@@ -110,13 +107,6 @@ def main():
            
     # Draw the map
     st.map(df_points, latitude="latitude", longitude="longitude", size="accuracy", color="color")
-    
-    # Add theming
-    #def local_css(file_name):
-    #    with open(file_name) as f:
-    #        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-    # local_css("medievel-theme.css")
-    
     
     # Start the Gemini Chat Bot
     load_dotenv(".env")
@@ -161,39 +151,6 @@ def main():
         for word in result:
             output = "".join(word.text for word in result)
         st.text(output)
-        
-    
-
-    def toggle_state():
-        if st.session_state.name == "USER":
-            st.session_state.name = "KINGDOM"
-            st.session_state.show_password = True
-        else:
-            st.session_state.name = "USER"
-            st.session_state.show_password = False
-    
-    st.button(st.session_state.name, on_click=toggle_state)
-
-    placeholder = st.empty()
-    
-    if st.session_state.show_password:
-        password = placeholder.text_input("Password")
-        
-    
-   
-    
-    # if st.session_state.name == "KINGDOM" and password == "password":
-    #     placeholder.empty()
-    #     if not df_user.empty:
-    #         latitude = df_user.loc[0, "latitude"]
-    #         longitude = df_user.loc[0, "longitude"]
-    #     with col1:
-    #         st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
-    # else:
-    #     # Handle the case where the DataFrame is empty (e.g., set default values or wait)
-    #     latitude = None
-    #     longitude = None
-    #     print("Data is still loading, default values set.")
     
     
 if __name__ == "__main__":
