@@ -12,7 +12,7 @@ import google.generativeai as ggi
 def main():
     
     # Set the page title and favicon
-    st.set_page_config(page_title="The Data Bard", page_icon="📜")
+    st.set_page_config(page_title="The Data Bard", page_icon="📜", layout="wide")
     
     
     # App content
@@ -74,13 +74,24 @@ def main():
     # Initialize session state if not set
     if "filterMap" not in st.session_state:
         st.session_state.filterMap = []
-    
-    # Filter types of points 
-    st.session_state.filterMap = st.pills(
+        
+    # Mapping of icons to filter names
+    icon_to_label = {
+        ":material/local_fire_department:": "FIRE",
+        ":material/coronavirus:": "DISEASE",
+        ":material/local_police:": "CRIME",
+    }
+
+    # Display pills with icons
+    selected_icons = st.pills(
         "Filter the Map",
-        ("FIRE", "DISEASE", "CRIME"),
+        list(icon_to_label.keys()),  # Use icons as options
         selection_mode="multi"
     )
+
+    # Convert selected icons to their corresponding labels
+    st.session_state.filterMap = [icon_to_label[icon] for icon in selected_icons]
+    
     
     
     df_user = pd.DataFrame(getLocation());
