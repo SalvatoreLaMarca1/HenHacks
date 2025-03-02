@@ -3,3 +3,4 @@ pandas
 numpy
 os
 google.generativeai
+streamlit_js_eval
