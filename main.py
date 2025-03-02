@@ -13,8 +13,12 @@ def main():
         
     if "name" not in st.session_state:
         st.session_state.name = "USER"
+        
     if "show_password" not in st.session_state:
         st.session_state.show_password = False
+        
+    if "filterMap" not in st.session_state:
+        st.session_state.filterMap = []
         
     def toggle_state():
         if st.session_state.name == "USER":
@@ -71,8 +75,20 @@ def main():
     "CRIME": color_crime_area
     }
     
+    # Initialize session state if not set
+    if "filterMap" not in st.session_state:
+        st.session_state.filterMap = []
+    
+    # Filter types of points 
+    st.session_state.filterMap = st.pills(
+        "",
+        ("FIRE", "DISEASE", "CRIME"),
+        selection_mode="multi"
+    )
+    
+    
     df_user = pd.DataFrame(getLocation());
-    df_reports = getReports();
+    df_reports = filteredReport(st.session_state.filterMap);
     
     
     if st.session_state.name == "USER":
@@ -95,19 +111,6 @@ def main():
     
 
     
-    # Check if the DataFrame is not empty before accessing the data
-    # if not df_user.empty:
-    #     latitude = df_user.loc[0, "latitude"]
-    #     longitude = df_user.loc[0, "longitude"]
-    #     st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
-        
-    # else:
-    #     # Handle the case where the DataFrame is empty (e.g., set default values or wait)
-    #     latitude = None
-    #     longitude = None
-    #     print("Data is still loading, default values set.")
-
-    
     df_center_reports = df_reports.copy(deep=True)
     df_area_reports = df_reports.copy(deep=True)
     df_center_reports['accuracy'] = 5
@@ -116,6 +119,7 @@ def main():
     
     df_points = pd.concat([df_user, df_center_reports], join='inner')
     df_points = pd.concat([df_points, df_area_reports], join='inner')
+    
            
     # current only shows the user
     st.map(df_points, latitude="latitude", longitude="longitude", size="accuracy", color="color")

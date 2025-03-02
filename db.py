@@ -24,6 +24,24 @@ def addReport(type, reported_by, latitude, longitude, accuracy, time, resolved, 
     df.to_csv(filepath, index=False)
     return df
 
+def filteredReport(filterMap):
+    
+    # Load CSV into a DataFrame
+    df = pd.read_csv(filepath)
+
+    # Ensure the 'type' column exists
+    # if "type" not in df.columns:
+    #     return pd.DataFrame()  # Return empty DataFrame if 'type' is missing
+
+    # Filter rows based on selected letters
+    if filterMap:
+        df = df[df["type"].isin(filterMap)]
+        
+    
+        
+    return df  # Return the filtered DataFrame
+    
+
 def getReports():
     df = pd.DataFrame(openCSV(filepath))
     return df
