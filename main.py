@@ -10,18 +10,30 @@ import os
 import google.generativeai as ggi
 
 def main():
-        
+    
+    # Set the page title and favicon
+    st.set_page_config(page_title="The Data Bard", page_icon="📜")
+    
+    # App content
+    st.title("Welcome to The Data Bard!")
+    
+    # Create two columns
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+            
     # Report Options
-    typeOfEvent = st.pills(
-        "What type of event is happening?",
-        ("FIRE", "DISEASE", "CRIME"),
-    )
+    with col1:
+        typeOfEvent = st.pills(
+            "What type of event is happening?",
+            ("FIRE", "DISEASE", "CRIME"),
+        )
     
     # Size Options
-    sizeOfEvent = st.pills(
-        "What is the size of the event?",
-        ("SMALL", "MEDIUM", "LARGE")
-    )
+    with col2:
+        sizeOfEvent = st.pills(
+            "What is the size of the event?",
+            ("SMALL", "MEDIUM", "LARGE")
+        )
     
 
     # Switch to number values
@@ -59,7 +71,8 @@ def main():
     if not df_user.empty:
         latitude = df_user.loc[0, "latitude"]
         longitude = df_user.loc[0, "longitude"]
-        st.button("Report", on_click=lambda: addReport(typeOfEvent, user, latitude, longitude, sizeOfEvent, now, False, False))
+        with col1:
+            st.button("Report", on_click=lambda: addReport(typeOfEvent, user, latitude, longitude, sizeOfEvent, now, False, False))
     else:
         # Handle the case where the DataFrame is empty (e.g., set default values or wait)
         latitude = None
@@ -76,7 +89,7 @@ def main():
     df_points = pd.concat([df_user, df_center_reports], join='inner')
     df_points = pd.concat([df_points, df_area_reports], join='inner')
            
-    # current only shows the user
+    # Draw the map
     st.map(df_points, latitude="latitude", longitude="longitude", size="accuracy", color="color")
     
     # Add theming
@@ -99,7 +112,7 @@ def main():
         response = chat.send_message(question,stream=True)
         return response
 
-    st.header("Ask for help with understanding the data!")
+    st.header("Seek wisdom in the data’s tale—ask for guidance!")
     
     user_quest = st.text_input("Ask a question:")
     btn = st.button("Ask")
@@ -129,6 +142,8 @@ def main():
         for word in result:
             output = "".join(word.text for word in result)
         st.text(output)
+        
+    
 
     
     
