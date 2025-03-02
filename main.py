@@ -63,10 +63,6 @@ def main():
         print("Data is still loading, default values set.")
 
     
-    
-    
-    st.write("Button clicked!")
-    
     df_center_reports = df_reports.copy(deep=True)
     df_area_reports = df_reports.copy(deep=True)
     df_center_reports['accuracy'] = 5
