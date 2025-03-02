@@ -10,6 +10,16 @@ import os
 import google.generativeai as ggi
 
 def main():
+    
+    # Set the page title and favicon
+    st.set_page_config(page_title="The Data Bard", page_icon="📜")
+    
+    
+    # App content
+    st.title("Welcome to The Data Bard!")
+    
+    # Create two columns
+    col1, col2, col3, col4, col5 = st.columns(5)
         
     if "name" not in st.session_state:
         st.session_state.name = "USER"
@@ -20,33 +30,23 @@ def main():
     if "filterMap" not in st.session_state:
         st.session_state.filterMap = []
         
-    def toggle_state():
-        if st.session_state.name == "USER":
-            st.session_state.name = "KINGDOM"
-            st.session_state.show_password = True
-        else:
-            st.session_state.name = "USER"
-            st.session_state.show_password = False
     
-    st.button(st.session_state.name, on_click=toggle_state)
-
-    placeholder = st.empty()
-    
-    if st.session_state.show_password:
-        password = placeholder.text_input("Password")
+   
         
-        
+            
     # Report Options
-    typeOfEvent = st.pills(
-        "What type of event is happening?",
-        ("FIRE", "DISEASE", "CRIME"),
-    )
+    with col1:
+        typeOfEvent = st.pills(
+            "What type of event is happening?",
+            ("FIRE", "DISEASE", "CRIME"),
+        )
     
     # Size Options
-    sizeOfEvent = st.pills(
-        "What is the size of the event?",
-        ("SMALL", "MEDIUM", "LARGE")
-    )
+    with col2:
+        sizeOfEvent = st.pills(
+            "What is the size of the event?",
+            ("SMALL", "MEDIUM", "LARGE")
+        )
     
 
     # Switch to number values
@@ -96,19 +96,6 @@ def main():
             latitude = df_user.loc[0, "latitude"]
             longitude = df_user.loc[0, "longitude"]
             st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
-    
-    if st.session_state.name == "KINGDOM" and password == "password":
-        placeholder.empty()
-        if not df_user.empty:
-            latitude = df_user.loc[0, "latitude"]
-            longitude = df_user.loc[0, "longitude"]
-            st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
-        else:
-            # Handle the case where the DataFrame is empty (e.g., set default values or wait)
-            latitude = None
-            longitude = None
-            print("Data is still loading, default values set.")
-    
 
     
     df_center_reports = df_reports.copy(deep=True)
@@ -121,7 +108,7 @@ def main():
     df_points = pd.concat([df_points, df_area_reports], join='inner')
     
            
-    # current only shows the user
+    # Draw the map
     st.map(df_points, latitude="latitude", longitude="longitude", size="accuracy", color="color")
     
     # Add theming
@@ -144,7 +131,7 @@ def main():
         response = chat.send_message(question,stream=True)
         return response
 
-    st.header("Ask for help with understanding the data!")
+    st.header("Seek wisdom in the data’s tale—ask for guidance!")
     
     user_quest = st.text_input("Ask a question:")
     btn = st.button("Ask")
@@ -174,8 +161,39 @@ def main():
         for word in result:
             output = "".join(word.text for word in result)
         st.text(output)
-
+        
     
+
+    def toggle_state():
+        if st.session_state.name == "USER":
+            st.session_state.name = "KINGDOM"
+            st.session_state.show_password = True
+        else:
+            st.session_state.name = "USER"
+            st.session_state.show_password = False
+    
+    st.button(st.session_state.name, on_click=toggle_state)
+
+    placeholder = st.empty()
+    
+    if st.session_state.show_password:
+        password = placeholder.text_input("Password")
+        
+    
+   
+    
+    # if st.session_state.name == "KINGDOM" and password == "password":
+    #     placeholder.empty()
+    #     if not df_user.empty:
+    #         latitude = df_user.loc[0, "latitude"]
+    #         longitude = df_user.loc[0, "longitude"]
+    #     with col1:
+    #         st.button("Report", on_click=lambda: addReport(typeOfEvent, st.session_state.name, latitude, longitude, sizeOfEvent, now, False, False))
+    # else:
+    #     # Handle the case where the DataFrame is empty (e.g., set default values or wait)
+    #     latitude = None
+    #     longitude = None
+    #     print("Data is still loading, default values set.")
     
     
 if __name__ == "__main__":
