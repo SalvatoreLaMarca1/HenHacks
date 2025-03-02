@@ -140,14 +140,12 @@ def main():
         response = chat.send_message(question,stream=True)
         return response
 
-    st.title("Ask for help with understanding the data!")
-
+    st.header("Ask for help with understanding the data!")
+    
     user_quest = st.text_input("Ask a question:")
     btn = st.button("Ask")
     
     preamble = """
-                  Your first task is to 
-    
                   You are a chat assistant for people in the 1300s. 
                   You provide insights on coordinate data linked to incidents including fires, disease breakouts, and crime reports.
                   Users can ask you questions about this data and it is your sole job to help them understand it.
@@ -160,7 +158,7 @@ def main():
                   
                   """
                   
-    epilogue = "\nHere is the question the user has:"
+    epilogue = "\nHere is the question the user has: "
                   
     file_path = "data.csv"
     with open(file_path, "r", encoding="utf-8") as file:
